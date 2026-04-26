@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="api\events\" />
+      <PackageReference Include="NATS.Client" Version="1.1.8" />
     </ItemGroup>
 
 </Project>
