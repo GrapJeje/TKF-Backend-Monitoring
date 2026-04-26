@@ -40,5 +40,6 @@ public class ApiServer
     private void RegisterRequests()
     {
         app.MapGet("/health", () => Results.Ok("Server is running"));
+        app.MapGet("/", () => Results.Json(Program.Events));
     }
 }

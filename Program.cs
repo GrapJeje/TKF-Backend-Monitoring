@@ -8,7 +8,7 @@ namespace TKF_Backend_Monitoring;
 internal class Program
 {
     public static IConnection? Connection { get; set; }
-    public static List<Event> Events { get; set; }
+    public static List<Event> Events { get; set; } = [];
 
     static void Main(string[] args)
     {
