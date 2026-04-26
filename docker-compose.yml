@@ -6,8 +6,16 @@
     ports:
       - "8080:8080"
     environment:
-      - AUTH_CODE=test
-      - EVENT_PRIORITY=0
+      - MODE=api
+    depends_on:
+      - nats
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MODE=worker
     depends_on:
       - nats
 

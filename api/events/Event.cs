@@ -3,18 +3,33 @@ using System.Text.Json;
 
 namespace TKF_Backend_Monitoring.api.events;
 
-public class Event(JsonElement message, int assetId, EventPriority priority, DateTime? dateOfEvent = null, Guid? guid = null)
+public class Event
 {
-    public Guid Guid { get; } = guid ?? Guid.NewGuid();
-    public JsonElement Message { get; } = message;
-    public int AssetId { get; } = assetId;
-    public EventPriority Priority { get; } = priority;
-    public DateTime DateOfEvent { get; set; } = dateOfEvent ?? DateTime.UtcNow;
+    public Guid Guid { get; } = Guid.NewGuid();
+    public string Message { get; }
+    public int AssetId { get; }
+    public EventPriority Priority { get; }
+    public DateTime DateOfEvent { get; } = DateTime.UtcNow;
 
-    public void CallEvent ()
+    public Event(string message, int assetId, EventPriority priority)
+    {
+        Message = message;
+        AssetId = assetId;
+        Priority = priority;
+    }
+
+    public void CallEvent()
     {
         string json = JsonSerializer.Serialize(this);
-        
+
+        if (Program.Connection == null)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("ERROR: NATS connection is null");
+            Console.ResetColor();
+            return;
+        }
+
         Program.Connection.Publish(
             "events.asset",
             Encoding.UTF8.GetBytes(json)
