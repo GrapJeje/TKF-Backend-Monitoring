@@ -25,7 +25,11 @@ public class EventListenerTask : TkfTask
                 if (e == null) return;
                 if (!e.Priority.ShouldThrowEvent()) return;
                 
-                Program.Events.Add(e);
+                if (!Program.Events.ContainsKey(e.AssetId))
+                {
+                    Program.Events[e.AssetId] = new List<Event>();
+                }
+                Program.Events[e.AssetId].Add(e);
             }
             catch (Exception ex)
             {

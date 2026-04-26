@@ -1,4 +1,6 @@
-﻿namespace TKF_Backend_Monitoring.api;
+﻿using TKF_Backend_Monitoring.api.events;
+
+namespace TKF_Backend_Monitoring.api;
 
 public class ApiServer
 {
@@ -42,7 +44,20 @@ public class ApiServer
         app.MapGet("/health", () => Results.Ok("Server is running"));
         app.MapGet("/", (HttpContext ctx) =>
         {
-            var events = Program.Events;
+            var events = new List<Event>();
+            
+            // Filter op assetId
+            if (int.TryParse(ctx.Request.Query["assetId"], out var assetId))
+            {
+                if (Program.Events.TryGetValue(assetId, out var assetEvents))
+                {
+                    events = new List<Event>(assetEvents);
+                }
+            }
+            else
+            {
+                events = Program.Events.Values.SelectMany(e => e).ToList();
+            }
             
             // Filter on GUID
             if (Guid.TryParse(ctx.Request.Query["guid"], out var guid))
@@ -50,16 +65,10 @@ public class ApiServer
                 events = events.Where(e => e.Guid == guid).ToList();
             }
 
-            // Filter on assetId
-            if (int.TryParse(ctx.Request.Query["assetId"], out var assetId))
-            {
-                events = events.Where(e => e.AssetId == assetId).ToList();
-            }
-
             // Filter on priority
             if (ctx.Request.Query.TryGetValue("priority", out var priorityStr))
             {
-                if (Enum.TryParse<TKF_Backend_Monitoring.api.events.EventPriority>(priorityStr.ToString(), out var priority))
+                if (Enum.TryParse<EventPriority>(priorityStr.ToString(), out var priority))
                 {
                     events = events.Where(e => e.Priority == priority).ToList();
                 }

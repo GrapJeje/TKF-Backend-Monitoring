@@ -19,6 +19,13 @@ public class EventCleanupTask : TkfTask
     private static void OnTimedEvent(object source, ElapsedEventArgs e)
     {
         // If the event was received 24 hours ago, remove it.
-        Program.Events.RemoveAll(ev => (DateTime.Now - ev.DateOfEvent).TotalHours >= 24);
+        foreach (var key in Program.Events.Keys.ToList())
+        {
+            Program.Events[key].RemoveAll(ev => (DateTime.Now - ev.DateOfEvent).TotalHours >= 24);
+            if (Program.Events[key].Count == 0)
+            {
+                Program.Events.Remove(key);
+            }
+        }
     }
 }
