@@ -1,11 +1,14 @@
 ﻿using NATS.Client;
 using TKF_Backend_Monitoring.api;
+using TKF_Backend_Monitoring.api.events;
+using TKF_Backend_Monitoring.api.tasks;
 
 namespace TKF_Backend_Monitoring;
 
 internal class Program
 {
     public static IConnection? Connection { get; set; }
+    public static List<Event> Events { get; set; }
 
     static void Main(string[] args)
     {
@@ -26,6 +29,9 @@ internal class Program
         
         // Start the EventListenerTask
         new EventListenerTask().Start();
+        
+        // Start the event cleanup
+        new EventCleanupTask().Start();
 
         var builder = WebApplication.CreateBuilder();
         var app = builder.Build();

@@ -1,8 +1,12 @@
 ﻿using TKF_Backend_Monitoring.api.events;
 
-namespace TKF_Backend_Monitoring.api;
+namespace TKF_Backend_Monitoring.api.tasks;
 
-public class EventThrowerTask
+/// <summary>
+/// Simulate events being throw at the system.
+/// Throws an event every 5 minutes.
+/// </summary>
+public class EventThrowerTask : TkfTask
 {
     private static readonly List<EventDefinition> Events = new()
     {
@@ -25,7 +29,7 @@ public class EventThrowerTask
 
     private readonly Random _random = new();
 
-    public void Start()
+    public override void Start()
     {
         Console.WriteLine("Starting worker task on thread: " + Thread.CurrentThread.ManagedThreadId);
 
