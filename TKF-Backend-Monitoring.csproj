@@ -9,4 +9,8 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="api\events\" />
+    </ItemGroup>
+
 </Project>

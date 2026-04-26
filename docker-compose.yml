@@ -7,3 +7,12 @@
       - "8080:8080"
     environment:
       - AUTH_CODE=test
+    depends_on:
+      - nats
+
+  nats:
+    image: nats:latest
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    command: "-js -m 8222"
