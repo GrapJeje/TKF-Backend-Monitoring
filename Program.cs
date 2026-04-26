@@ -14,18 +14,19 @@ internal class Program
         // Nats server
         var cf = new ConnectionFactory();
         Connection = cf.CreateConnection("nats://nats:4222");
-
+        
         if (mode == "worker")
         {
-            RunWorker();
+            Console.WriteLine("Worker started");
+
+            // Start the event simulation
+            new EventThrowerTask().Start();
             return;
-        }
+        } 
+        
+        // Start the EventListenerTask
+        new EventListenerTask().Start();
 
-        RunApi();
-    }
-
-    static void RunApi()
-    {
         var builder = WebApplication.CreateBuilder();
         var app = builder.Build();
 
@@ -33,13 +34,5 @@ internal class Program
         new ApiServer(app);
 
         app.Run("http://0.0.0.0:8080");
-    }
-
-    static void RunWorker()
-    {
-        Console.WriteLine("Worker started");
-
-        // Start the event simulation
-        new EventThrowerTask().Start();
     }
 }

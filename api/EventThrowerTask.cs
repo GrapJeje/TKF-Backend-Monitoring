@@ -35,7 +35,6 @@ public class EventThrowerTask
             int assetId = _random.Next(1, 101);
 
             var e = new Event(randomEvent.Message, assetId, randomEvent.Priority);
-
             e.CallEvent();
 
             Console.WriteLine($"Threw {randomEvent.Message} event at {e.DateOfEvent}");
