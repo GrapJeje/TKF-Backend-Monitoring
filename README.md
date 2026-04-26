@@ -11,6 +11,6 @@
 ## Nice to haves
 
 - [X] Test Docker applicatie die demo events injecteert in de NATS messagebus, om zo een volledige integratie te kunnen simuleren.
-- [ ] Filter op AssetId in de API, op een efficiënte manier zonder de gehele dataset door te lopen.
+- [X] Filter op AssetId in de API, op een efficiënte manier zonder de gehele dataset door te lopen.
 - [ ] Gelijktijdig gebruik van API tijdens de gegevensprocessing en het opruimen van de events.
 - [ ] Beveiligen tegen maximaal geheugengebruik bij hoge throughput van events.
